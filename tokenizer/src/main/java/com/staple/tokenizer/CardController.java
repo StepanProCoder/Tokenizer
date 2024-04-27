@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.staple.tokenizer.dbentities.Card;
 import com.staple.tokenizer.dbentities.Deck;
+import com.staple.tokenizer.dbentities.DeckChanges;
 import com.staple.tokenizer.dbentities.Token;
 import com.staple.tokenizer.dbservices.CardService;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +40,25 @@ public class CardController {
         return ResponseEntity.ok(cards);
     }
 
-//    @GetMapping("/{cardName}")
-//    public ResponseEntity<List<Object>> getCard(@PathVariable("cardName") String cardName) {
-//        List<Object> card = cardService.getCards(cardName);
-//        Integer[] arr = {1,2,3,4,5,16,6};
-//        cardService.addDeck("DEkaewfergfer", List.of(arr));
-//        return ResponseEntity.ok(card);
-//    }
+    @GetMapping("/allcards/")
+    public ResponseEntity<List<Card>> getAllCards()
+    {
+        List<Card> cards = cardService.getAllCards();
+        return ResponseEntity.ok(cards);
+    }
+
+    @PostMapping("/deletedeck/")
+    public ResponseEntity<Boolean> deleteDeck(@RequestBody Deck deck)
+    {
+        cardService.deleteDeck(deck);
+        return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/deckchange/")
+    public ResponseEntity<Boolean> changeOrCreateDeck(@RequestBody DeckChanges deckChanges)
+    {
+        cardService.changeOrCreateDeck(deckChanges);
+        return ResponseEntity.ok(true);
+    }
+
 }

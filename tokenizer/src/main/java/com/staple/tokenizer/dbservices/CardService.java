@@ -2,15 +2,12 @@ package com.staple.tokenizer.dbservices;
 
 import com.staple.tokenizer.dbentities.Card;
 import com.staple.tokenizer.dbentities.Deck;
-import com.staple.tokenizer.dbentities.Token;
+import com.staple.tokenizer.dbentities.DeckChanges;
 import com.staple.tokenizer.dbrepositories.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CardService {
@@ -21,12 +18,12 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public void addDeck(String deckName, List<Integer> cardIds) {
-            cardRepository.addDeckName(deckName);
-        for(Integer cardid: cardIds) {
-            cardRepository.addDeck(cardid);
-        }
-    }
+//    public void addDeck(String deckName, List<Integer> cardIds) {
+//        cardRepository.addDeck(deckName);
+//        for(Integer cardid: cardIds) {
+//            cardRepository.addCardToDeck(Long.valueOf(cardid));
+//        }
+//    }
     public List<Object> getCards(String cardName) {
         return cardRepository.getCards(cardName);
     }
@@ -47,6 +44,16 @@ public class CardService {
     public List<Card> postCardsOfChosenDeck(Deck deck)
     {
         List<Object[]> cardsObjects = cardRepository.postCardsOfChosenDeck(deck.getId());
+        return getCards(cardsObjects);
+    }
+
+    public List<Card> getAllCards()
+    {
+        List<Object[]> cardsObjects = cardRepository.getAllCards();
+        return getCards(cardsObjects);
+    }
+
+    private List<Card> getCards(List<Object[]> cardsObjects) {
         List<Card> cards = new ArrayList<>();
         for (Object[] objectArray : cardsObjects)
         {
@@ -57,6 +64,43 @@ public class CardService {
             cards.add(card);
         }
         return cards;
+    }
+
+    public void deleteDeck(Deck deck)
+    {
+        cardRepository.deleteDeck(deck.getId());
+    }
+
+    public void changeOrCreateDeck(DeckChanges deckChanges)
+    {
+        Integer deckId = deckChanges.getDeckId();
+        String newName = deckChanges.getNewName();
+        List<Card> deletedCards = deckChanges.getDeletedCards();
+        List<Card> addedCards = deckChanges.getAddedCards();
+
+        if (deckId == null)
+        {
+            if (newName != null)
+            {
+                cardRepository.addDeck(newName);
+            }
+            deckId = Math.toIntExact(cardRepository.getMaxDeckId());
+        }
+        else if (newName != null)
+        {
+            cardRepository.updateDeck(Long.valueOf(deckId), newName);
+        }
+
+        for(Card item : deletedCards)
+        {
+            cardRepository.deleteCardFromDeck(item.getId(), Long.valueOf(deckId));
+        }
+
+        for(Card item : addedCards)
+        {
+            cardRepository.addCardToDeck(item.getId(), Long.valueOf(deckId));
+        }
+
     }
 }
 
