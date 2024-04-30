@@ -71,5 +71,22 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Modifying
     @Query(value = "DELETE FROM decks WHERE (decks.deckid = :deckId);", nativeQuery = true)
     void deleteDeck(@Param("deckId") Long deckId);
+
+    @Query(value = "SELECT c.pic_url,\n" +
+            "       t.pic_url,\n" +
+            "       pc.pic_url,\n" +
+            "       plc.pic_url,\n" +
+            "       e.pic_url\n" +
+            "FROM cards c\n" +
+            "LEFT JOIN cardstokens ct ON c.cardid = ct.cardid\n" +
+            "LEFT JOIN tokens t ON ct.tokenid = t.tokenid\n" +
+            "LEFT JOIN cardspermcounters cpc ON c.cardid = cpc.cardid\n" +
+            "LEFT JOIN permcounters pc ON cpc.permcounterid = pc.permcounterid\n" +
+            "LEFT JOIN cardsplayercounters cplc ON c.cardid = cplc.cardid\n" +
+            "LEFT JOIN playercounters plc ON cplc.playercounterid = plc.playercounterid\n" +
+            "LEFT JOIN cardsemblems ce ON c.cardid = ce.cardid\n" +
+            "LEFT JOIN emblems e ON ce.emblemid = e.emblemid\n" +
+            "WHERE (c.cardid = :cardId);\n", nativeQuery = true)
+    List<Object[]> getCardAllPermanents(@Param("cardId") Long cardId);
 }
 

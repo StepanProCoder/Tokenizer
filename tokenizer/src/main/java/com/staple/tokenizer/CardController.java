@@ -61,4 +61,11 @@ public class CardController {
         return ResponseEntity.ok(true);
     }
 
+    @PostMapping("allperm/")
+    public ResponseEntity<List<String>> postPlacingCard(@RequestBody Card card)
+    {
+        List<String> result = cardService.postPlacingCard(card);
+        return ResponseEntity.ok(result);
+    }
+
 }

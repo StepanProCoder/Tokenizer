@@ -102,5 +102,19 @@ public class CardService {
         }
 
     }
+
+    public List<String> postPlacingCard(Card card)
+    {
+        List<Object[]> resultList = cardRepository.getCardAllPermanents(card.getId());
+        List<String> stringList = new ArrayList<>();
+
+        for (Object[] row : resultList) {
+            for (Object obj : row) {
+                stringList.add(obj != null ? obj.toString() : null);
+            }
+        }
+
+        return stringList;
+    }
 }
 
