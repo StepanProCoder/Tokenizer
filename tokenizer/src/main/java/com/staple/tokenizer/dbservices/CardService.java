@@ -1,8 +1,6 @@
 package com.staple.tokenizer.dbservices;
 
-import com.staple.tokenizer.dbentities.Card;
-import com.staple.tokenizer.dbentities.Deck;
-import com.staple.tokenizer.dbentities.DeckChanges;
+import com.staple.tokenizer.dbentities.*;
 import com.staple.tokenizer.dbrepositories.CardRepository;
 import org.springframework.stereotype.Service;
 
@@ -115,6 +113,82 @@ public class CardService {
         }
 
         return stringList;
+    }
+
+    public List<Token> getAllTokens() {
+        List<Object[]> tokenObjects = cardRepository.getAllTokens();
+        List<Token> tokens = new ArrayList<>();
+        for (Object[] objectArray : tokenObjects)
+        {
+            Token token = new Token();
+            token.setId((Long) objectArray [0]);
+            token.setName((String) objectArray[1]);
+            token.setPicUrl((String) objectArray[2]);
+            tokens.add(token);
+        }
+        return tokens;
+    }
+
+    public List<Emblem> getAllEmblems() {
+        List<Object[]> emblemObjects = cardRepository.getAllEmblems();
+        List<Emblem> emblems = new ArrayList<>();
+        for (Object[] objectArray : emblemObjects)
+        {
+            Emblem emblem = new Emblem();
+            emblem.setId((Long) objectArray [0]);
+            emblem.setName((String) objectArray[1]);
+            emblem.setPicUrl((String) objectArray[2]);
+            emblems.add(emblem);
+        }
+        return emblems;
+    }
+
+    public List<Permcounter> getAllPermcounters() {
+        List<Object[]> permcounterObjects = cardRepository.getAllPermcounters();
+        List<Permcounter> permcounters = new ArrayList<>();
+        for (Object[] objectArray : permcounterObjects)
+        {
+            Permcounter permcounter = new Permcounter();
+            permcounter.setId((Long) objectArray [0]);
+            permcounter.setName((String) objectArray[1]);
+            permcounter.setPicUrl((String) objectArray[2]);
+            permcounters.add(permcounter);
+        }
+        return permcounters;
+    }
+
+    public List<Playercounter> getAllPlayercounters() {
+        List<Object[]> playercounterObjects = cardRepository.getAllPlayercounters();
+        List<Playercounter> playercounters = new ArrayList<>();
+        for (Object[] objectArray : playercounterObjects)
+        {
+            Playercounter playercounter = new Playercounter();
+            playercounter.setId((Long) objectArray [0]);
+            playercounter.setName((String) objectArray[1]);
+            playercounter.setPicUrl((String) objectArray[2]);
+            playercounters.add(playercounter);
+        }
+        return playercounters;
+    }
+
+    public void deleteCard(Card card) {
+        cardRepository.deleteCard(card.getId());
+    }
+
+    public void deleteToken(Token token) {
+        cardRepository.deleteToken(token.getId());
+    }
+
+    public void deleteEmblem(Emblem emblem) {
+        cardRepository.deleteEmblem(emblem.getId());
+    }
+
+    public void deletePermcounter(Permcounter permcounter) {
+        cardRepository.deletePermcounter(permcounter.getId());
+    }
+
+    public void deletePlayercounter(Playercounter playercounter) {
+        cardRepository.deletePlayercounter(playercounter.getId());
     }
 }
 

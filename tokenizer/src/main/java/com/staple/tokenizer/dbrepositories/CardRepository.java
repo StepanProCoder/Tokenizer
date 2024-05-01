@@ -1,6 +1,6 @@
 package com.staple.tokenizer.dbrepositories;
 
-import com.staple.tokenizer.dbentities.Card;
+import com.staple.tokenizer.dbentities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -88,5 +88,42 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             "LEFT JOIN emblems e ON ce.emblemid = e.emblemid\n" +
             "WHERE (c.cardid = :cardId);\n", nativeQuery = true)
     List<Object[]> getCardAllPermanents(@Param("cardId") Long cardId);
+
+    @Query(value = "SELECT * FROM tokens;", nativeQuery = true)
+    List<Object[]> getAllTokens();
+
+    @Query(value = "SELECT * FROM emblems;", nativeQuery = true)
+    List<Object[]> getAllEmblems();
+
+    @Query(value = "SELECT * FROM permcounters;", nativeQuery = true)
+    List<Object[]> getAllPermcounters();
+
+    @Query(value = "SELECT * FROM playercounters;", nativeQuery = true)
+    List<Object[]> getAllPlayercounters();
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM cards WHERE (cardid = :cardId);", nativeQuery = true)
+    void deleteCard(@Param("cardId") Long cardId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM tokens WHERE (tokenid = :tokenId);", nativeQuery = true)
+    void deleteToken(@Param("tokenId") Long tokenId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM emblems WHERE (emblemid = :emblemId);", nativeQuery = true)
+    void deleteEmblem(@Param("emblemId") Long emblemId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM permcounters WHERE (permcounterid = :permcounterId);", nativeQuery = true)
+    void deletePermcounter(@Param("permcounterId") Long permcounterId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM playercounters WHERE (playercounterid = :playercounterId);", nativeQuery = true)
+    void deletePlayercounter(@Param("playercounterId") Long playercounterId);
 }
 
