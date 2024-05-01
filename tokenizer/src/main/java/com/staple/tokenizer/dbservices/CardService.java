@@ -190,5 +190,81 @@ public class CardService {
     public void deletePlayercounter(Playercounter playercounter) {
         cardRepository.deletePlayercounter(playercounter.getId());
     }
+
+    public void submitPermChanges(PermanentChanges permanentChanges)
+    {
+        Integer mode = permanentChanges.getMode();
+        switch (mode)
+        {
+            case 1:
+                if(permanentChanges.getNewName() != null && !permanentChanges.getNewName().isEmpty()) {
+                    if (permanentChanges.getPermId() == null) {
+                        cardRepository.addCard(permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    } else {
+                        cardRepository.updateCard(permanentChanges.getPermId(), permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    }
+                }
+                break;
+            case 2:
+                if(permanentChanges.getNewName() != null && !permanentChanges.getNewName().isEmpty()) {
+                    if (permanentChanges.getPermId() == null) {
+                        cardRepository.addToken(permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    } else {
+                        cardRepository.updateToken(permanentChanges.getPermId(), permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    }
+                }
+
+                for (Card item: permanentChanges.getBonds())
+                {
+                    cardRepository.addTokenBond(item.getId(), permanentChanges.getPermId());
+                }
+                break;
+            case 3:
+                if(permanentChanges.getNewName() != null && !permanentChanges.getNewName().isEmpty()) {
+                    if (permanentChanges.getPermId() == null) {
+                        cardRepository.addEmblem(permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    } else {
+                        cardRepository.updateEmblem(permanentChanges.getPermId(), permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    }
+                }
+
+                for (Card item: permanentChanges.getBonds())
+                {
+                    cardRepository.addEmblemBond(item.getId(), permanentChanges.getPermId());
+                }
+                break;
+            case 4:
+                if(permanentChanges.getNewName() != null && !permanentChanges.getNewName().isEmpty()) {
+                    if (permanentChanges.getPermId() == null) {
+                        cardRepository.addPermcounter(permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    } else {
+                        cardRepository.updatePermcounter(permanentChanges.getPermId(), permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                    }
+                }
+
+                for (Card item: permanentChanges.getBonds())
+                {
+                    cardRepository.addPermcounterBond(item.getId(), permanentChanges.getPermId());
+                }
+                break;
+            case 5:
+                if(permanentChanges.getNewName() != null && !permanentChanges.getNewName().isEmpty()) {
+                if (permanentChanges.getPermId() == null)
+                {
+                    cardRepository.addPlayercounter(permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                }
+                else
+                {
+                    cardRepository.updatePlayercounter(permanentChanges.getPermId(), permanentChanges.getNewName(), permanentChanges.getNewPicUrl());
+                }
+                }
+
+                for (Card item: permanentChanges.getBonds())
+                {
+                    cardRepository.addPlayercounterBond(item.getId(), permanentChanges.getPermId());
+                }
+                break;
+        }
+    }
 }
 

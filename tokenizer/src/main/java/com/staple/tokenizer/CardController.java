@@ -72,66 +72,73 @@ public class CardController {
         return ResponseEntity.ok(cards);
     }
 
-    @GetMapping("permedittokens/")
+    @GetMapping("/permedittokens/")
     public ResponseEntity<List<Token>> permGetTokens()
     {
         List<Token> tokens = cardService.getAllTokens();
         return ResponseEntity.ok(tokens);
     }
 
-    @GetMapping("permeditemblems/")
+    @GetMapping("/permeditemblems/")
     public ResponseEntity<List<Emblem>> permGetEmblems()
     {
         List<Emblem> emblems = cardService.getAllEmblems();
         return ResponseEntity.ok(emblems);
     }
 
-    @GetMapping("permeditpermcounters/")
+    @GetMapping("/permeditpermcounters/")
     public ResponseEntity<List<Permcounter>> permGetPermcounters()
     {
         List<Permcounter> permcounters = cardService.getAllPermcounters();
         return ResponseEntity.ok(permcounters);
     }
 
-    @GetMapping("permeditplayercounters/")
+    @GetMapping("/permeditplayercounters/")
     public ResponseEntity<List<Playercounter>> permGetPlayercounters()
     {
         List<Playercounter> playercounters = cardService.getAllPlayercounters();
         return ResponseEntity.ok(playercounters);
     }
 
-    @PostMapping("permeditcards/")
+    @PostMapping("/permeditcards/")
     public ResponseEntity<Boolean> deleteCard(@RequestBody Card card)
     {
         cardService.deleteCard(card);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("permedittokens/")
+    @PostMapping("/permedittokens/")
     public ResponseEntity<Boolean> deleteToken(@RequestBody Token token)
     {
         cardService.deleteToken(token);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("permeditemblem/")
+    @PostMapping("/permeditemblem/")
     public ResponseEntity<Boolean> deleteEmblem(@RequestBody Emblem emblem)
     {
         cardService.deleteEmblem(emblem);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("permeditpermcounters/")
+    @PostMapping("/permeditpermcounters/")
     public ResponseEntity<Boolean> deletePermcounter(@RequestBody Permcounter permcounter)
     {
         cardService.deletePermcounter(permcounter);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("permeditplayercounters/")
+    @PostMapping("/permeditplayercounters/")
     public ResponseEntity<Boolean> deletePlayercounter(@RequestBody Playercounter playercounter)
     {
         cardService.deletePlayercounter(playercounter);
+        return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/permchanges/")
+    public ResponseEntity<Boolean> submitPermChanges(@RequestBody PermanentChanges permanentChanges)
+    {
+        cardService.submitPermChanges(permanentChanges);
         return ResponseEntity.ok(true);
     }
 

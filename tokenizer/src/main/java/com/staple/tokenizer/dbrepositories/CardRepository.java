@@ -125,5 +125,75 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Modifying
     @Query(value = "DELETE FROM playercounters WHERE (playercounterid = :playercounterId);", nativeQuery = true)
     void deletePlayercounter(@Param("playercounterId") Long playercounterId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO cards(name, pic_url) VALUES(:newName, :newPicUrl);", nativeQuery = true)
+    void addCard(@Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE cards SET cards.name = :newName, cards.pic_url = :newPicUrl WHERE (cards.cardid = :permId);", nativeQuery = true)
+    void updateCard(@Param("permId") Long permId, @Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO tokens(name, pic_url) VALUES(:newName, :newPicUrl);", nativeQuery = true)
+    void addToken(@Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE tokens SET tokens.name = :newName, tokens.pic_url = :newPicUrl WHERE (tokens.tokenid = :permId);", nativeQuery = true)
+    void updateToken(@Param("permId") Long permId, @Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO emblems(name, pic_url) VALUES(:newName, :newPicUrl);", nativeQuery = true)
+    void addEmblem(@Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE emblems SET emblems.name = :newName, emblems.pic_url = :newPicUrl WHERE (emblems.emblemid = :permId);", nativeQuery = true)
+    void updateEmblem(@Param("permId") Long permId, @Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO permcounters(name, pic_url) VALUES(:newName, :newPicUrl);", nativeQuery = true)
+    void addPermcounter(@Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE permcounters SET permcounters.name = :newName, permcounters.pic_url = :newPicUrl WHERE (permcounters.permcounterid = :permId);", nativeQuery = true)
+    void updatePermcounter(@Param("permId") Long permId, @Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO playercounters(name, pic_url) VALUES(:newName, :newPicUrl);", nativeQuery = true)
+    void addPlayercounter(@Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE playercounters SET playercounters.name = :newName, playercounters.pic_url = :newPicUrl WHERE (playercounters.playercounterid = :permId);", nativeQuery = true)
+    void updatePlayercounter(@Param("permId") Long permId, @Param("newName") String newName,@Param("newPicUrl") String newPicUrl);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO cardstokens(cardid, tokenid) VALUES(:id, :permId);", nativeQuery = true)
+    void addTokenBond(@Param("id") Long id,@Param("permId") Long permId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO cardsemblems(cardid, emblemid) VALUES(:id, :permId);", nativeQuery = true)
+    void addEmblemBond(@Param("id") Long id,@Param("permId") Long permId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO cardspermcounters(cardid, permcounterid) VALUES(:id, :permId);", nativeQuery = true)
+    void addPermcounterBond(@Param("id") Long id,@Param("permId") Long permId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO cardsplayercounters(cardid, playercounterid) VALUES(:id, :permId);", nativeQuery = true)
+    void addPlayercounterBond(@Param("id") Long id,@Param("permId") Long permId);
 }
 
